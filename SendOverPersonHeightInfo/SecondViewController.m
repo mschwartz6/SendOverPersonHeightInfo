@@ -14,7 +14,6 @@
 @property(nonatomic,strong) IBOutlet UILabel *addressLabel;
 @property(nonatomic,strong) IBOutlet UILabel *weightLabel;
 @property(nonatomic,strong) IBOutlet UILabel *heightFeetLabel;
-@property(nonatomic,strong) IBOutlet UILabel *heightInchesLabel;
 @property(nonatomic,strong) IBOutlet UILabel *weightPoundsLabel;
 @end
 
@@ -36,25 +35,26 @@
     double doubleInches = [origInches doubleValue];
     double totalInches = (doubleFeet * 12) + doubleInches;
     double heightInMeters = totalInches * .0254;
-    return [NSString stringWithFormat:@"%.f",heightInMeters];
+    return [NSString stringWithFormat:@"%.2f m",heightInMeters];
 }
 -(NSString *)convertToMass: (NSString *) origWeight {
     double weight = [origWeight doubleValue];
     double mass = (weight * 453.59237)/1000;
-    return [NSString stringWithFormat:@"%.2f",mass];
+    return [NSString stringWithFormat:@"%.2f kg",mass];
 }
 -(void)displayLabels {
     
     NSString * heightInMeters = [self convertToMeters:[_patientIntake getHeightInFeet] :[_patientIntake getHeightInInches]];
     NSString *massInKilograms = [self convertToMass:[_patientIntake getWeightInPounds]];
+    NSString *heightInFeet = [NSString stringWithFormat:@"%@ ft %@ in",[_patientIntake getHeightInFeet],[_patientIntake getHeightInInches]];
+    NSString *weightInPounds = [NSString stringWithFormat:@"%@ lbs",[_patientIntake getWeightInPounds]];
     self.nameLabel.text = [_patientIntake getName];
     self.dobLabel.text = [_patientIntake getDateOfBirth];
     self.addressLabel.text = [_patientIntake getAddress];
     self.heightLabel.text = heightInMeters;
     self.weightLabel.text = massInKilograms;
-    self.heightFeetLabel.text = [_patientIntake getHeightInFeet];
-    self.heightInchesLabel.text = [_patientIntake getHeightInInches];
-    self.weightPoundsLabel.text = [_patientIntake getWeightInPounds];
+    self.heightFeetLabel.text = heightInFeet;
+    self.weightPoundsLabel.text = weightInPounds;
 }
 
 
